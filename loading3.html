@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loading - 地球が回る</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at center, #a0cfe8, #1e3c72); /* 宇宙っぽいグラデーション */
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .globe {
+      width: 100px;
+      height: 100px;
+      animation: spin 6s linear infinite;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+      color: #ffffff;
+    }
+
+    .globe svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      font-size: 26px;
+      color: black;
+      letter-spacing: 1px;
+    }
+
+    .main-content {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 1.5s ease, transform 1.5s ease;
+      padding: 40px;
+      text-align: center;
+      color: #333;
+    }
+
+    .main-content.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ローディング画面 -->
+  <div class="loader-container" id="loader">
+    <!-- 回る地球 -->
+    <div class="globe">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9s-2.015-9-4.5-9m0 3.375C18.618 3.375 21 5.82 21 8.625c0 2.825-2.382 5.25-9 5.25s-9-2.425-9-5.25c0-2.805 2.382-5.25 9-5.25Z" />
+      </svg>
+    </div>
+    <div class="loading-text" id="loadingText">loading</div>
+  </div>
+
+  <!-- 目的の画面 -->
+  <div class="main-content" id="mainContent">
+    <h1>ようこそ、地球の旅へ🌍</h1>
+    <p>あなたの冒険が、ここから始まります。</p>
+  </div>
+
+  <script>
+    // loading... アニメーション
+    const loadingText = document.getElementById('loadingText');
+    const dots = ['', '.', '..', '...'];
+    let dotIndex = 0;
+
+    setInterval(() => {
+      loadingText.textContent = 'loading' + dots[dotIndex];
+      dotIndex = (dotIndex + 1) % dots.length;
+    }, 500); // 0.5秒ごとに更新
+
+    // ローディングを3秒表示 → 本画面へフェード＋拡大
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('mainContent').classList.add('show');
+      }, 3000); // 3秒待機
+    });
+  </script>
+
+</body>
+</html>
