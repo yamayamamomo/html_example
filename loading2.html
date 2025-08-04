@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f5f5f5, #e0e0e0); /* グラデーション背景 */
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .star-svg {
+      width: 120px;
+      height: 120px;
+      animation: rotate 3s linear infinite, glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes rotate {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes glow {
+      0%   { filter: drop-shadow(0 0 5px orange); }
+      100% { filter: drop-shadow(0 0 15px orange); }
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      font-size: 26px;
+      color: orange;
+      letter-spacing: 1px;
+    }
+
+    .main-content {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 1.5s ease, transform 1.5s ease;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .main-content.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ローディング画面 -->
+  <div class="loader-container" id="loader">
+    <!-- 完璧な六芒星 -->
+    <svg class="star-svg" viewBox="0 0 100 100">
+      <!-- 上向き三角形 -->
+      <polygon points="
+        50,10 
+        84.641,30 
+        84.641,70 
+        50,90 
+        15.359,70 
+        15.359,30 
+      " stroke="orange" stroke-width="3" fill="none" stroke-linejoin="round"/>
+      <!-- 下向き三角形 -->
+      <polygon points="
+        50,90 
+        84.641,70 
+        84.641,30 
+        50,10 
+        15.359,30 
+        15.359,70 
+      " stroke="orange" stroke-width="3" fill="none" stroke-linejoin="round"/>
+    </svg>
+
+    <div class="loading-text" id="loadingText">loading</div>
+  </div>
+
+  <!-- 目的の画面 -->
+  <div class="main-content" id="mainContent">
+    <h1>メイン画面へようこそ！</h1>
+    <p>このコンテンツはローディング後に表示されます。</p>
+  </div>
+
+  <script>
+    // loading... アニメーション
+    const loadingText = document.getElementById('loadingText');
+    const dots = ['', '.', '..', '...'];
+    let dotIndex = 0;
+
+    setInterval(() => {
+      loadingText.textContent = 'loading' + dots[dotIndex];
+      dotIndex = (dotIndex + 1) % dots.length;
+    }, 500); // 0.5秒ごとに更新
+
+    // ローディングを3秒表示 → 本画面へフェード＋拡大
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        loader.style.display = 'none';
+
+        const content = document.getElementById('mainContent');
+        content.classList.add('show');
+      }, 3000); // 3秒待機
+    });
+  </script>
+
+</body>
+</html>
