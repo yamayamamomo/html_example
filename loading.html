@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loading - Tour</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #cce5ff, #f0f8ff); /* 青系グラデーション */
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .plane {
+        font-size: 60px;
+      width: 80px;
+      animation: fly 3s ease-in-out infinite;
+    }
+
+    @keyframes fly {
+      0%   { transform: translateX(-150px) translateY(0px) rotate(0deg); opacity: 0; }
+      30%  { opacity: 1; }
+      50%  { transform: translateX(0px) translateY(-10px) rotate(5deg); opacity: 1; }
+      70%  { opacity: 1; }
+      100% { transform: translateX(150px) translateY(0px) rotate(0deg); opacity: 0; }
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      font-size: 26px;
+      color: #ff6600;
+      letter-spacing: 1px;
+    }
+
+    .main-content {
+      opacity: 0;
+      transform: scale(0.95);
+      transition: opacity 1.5s ease, transform 1.5s ease;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .main-content.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ローディング画面 -->
+  <div class="loader-container" id="loader">
+    <!-- 飛行機アイコン（emojiで簡易的に） -->
+    <div class="plane">✈️</div>
+
+    <div class="loading-text" id="loadingText">loading</div>
+  </div>
+
+  <!-- 目的の画面 -->
+  <div class="main-content" id="mainContent">
+    <h1>ようこそ！ツアーへ出発しましょう✈️</h1>
+    <p>旅の始まりです。</p>
+  </div>
+
+  <script>
+    // loading... アニメーション
+    const loadingText = document.getElementById('loadingText');
+    const dots = ['', '.', '..', '...'];
+    let dotIndex = 0;
+
+    setInterval(() => {
+      loadingText.textContent = 'loading' + dots[dotIndex];
+      dotIndex = (dotIndex + 1) % dots.length;
+    }, 500); // 0.5秒ごとに更新
+
+    // ローディングを3秒表示 → 本画面へフェード＋拡大
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        loader.style.display = 'none';
+
+        const content = document.getElementById('mainContent');
+        content.classList.add('show');
+      }, 4000); // 4秒待機
+    });
+  </script>
+
+</body>
+</html>
